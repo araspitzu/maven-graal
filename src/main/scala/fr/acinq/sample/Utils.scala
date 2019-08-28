@@ -1,8 +1,10 @@
 package fr.acinq.sample
 
 import com.typesafe.scalalogging.LazyLogging
+import org.apache.commons.codec.binary.Base32
 import org.json4s.CustomSerializer
 import org.json4s.JsonAST.{JField, JInt, JObject, JString}
+import scodec.Codec
 import scodec.bits.ByteVector
 import scodec.codecs._
 
@@ -72,5 +74,11 @@ object Utils extends LazyLogging {
     min
   }
 
+  /**
+    * Commons-codec base32 example
+    */
+  def encodeBase32(s: String) = {
+    new Base32().encodeAsString(s.getBytes)
+  }
 
 }

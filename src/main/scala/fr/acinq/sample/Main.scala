@@ -39,6 +39,8 @@ object Main extends LazyLogging with Directives with Json4sSupport {
           complete(Utils.showScodecUsage())
         } ~ path("jheaps") {
           complete(Utils.showJHeapUsage())
+        } ~ path("commons") {
+          complete(s"LightningNerwork == Base32(${Utils.encodeBase32("LightningNerwork")})")
         }
     }
 
