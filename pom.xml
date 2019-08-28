@@ -25,8 +25,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <scala.version>2.13.0</scala.version>
-        <scala.version.short>2.13</scala.version.short>
+        <scala.version>2.12.9</scala.version>
+        <scala.version.short>2.12</scala.version.short>
         <akka.version>2.5.23</akka.version>
         <akka.http.version>10.1.8</akka.http.version>
         <graal.version>19.1.1</graal.version>
