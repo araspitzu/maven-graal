@@ -1,15 +1,17 @@
-# Akka HTTP + GraalVM native
-Example project with simple Akka HTTP server compiled with GraalVM native-image.
+# GraalVM native with eclair dependencies
+
+Example project showing the usage of a simple akka http server with json serialization, compiled with GraalVM native-image.
+The goal of the project is to use all of eclair's dependencies to prepare moving to the graal platform.
 
 ## Pre-requisites
   * Maven
   * [GraalVM](https://github.com/oracle/graal/releases)
-  * `native-image` from `GRAAL_HOME/bin` in `PATH`
+  * `native-image` from `$GRAAL_HOME/bin` in `PATH`
   
 Suggested environment variables:
 
-    export GRAAL_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-19.1.1/Contents/Home
-    export PATH=$PATH:${GRAAL_HOME}/bin
+    export GRAAL_HOME=/path/to/your/graal/installation/graalvm-ce-19.2.0
+    export PATH=$PATH:$GRAAL_HOME/bin
     
 [Install native-image](https://www.graalvm.org/docs/reference-manual/aot-compilation/#install-native-image):
 
@@ -17,17 +19,14 @@ Suggested environment variables:
   
 ## Compiling
     
-    mvn package
+    JAVA_HOME=$GRAAL_HOME mvn clean package
     
 It might take a few minutes to compile.
    
 ## Running
-    
-    # MacOS:
-    ./target/graalvm-native-image/akka-graal-native -Djava.library.path=${GRAAL_HOME}/jre/lib
-    
+        
     # Linux:
-    ./target/graalvm-native-image/akka-graal-native -Djava.library.path=${GRAAL_HOME}/jre/lib/amd64
+    target/graal-akka-maven -Djava.library.path=$JAVA_HOME/lib
     
 Because the project is compiled with
 [Java Crypto enabled](https://github.com/oracle/graal/blob/master/substratevm/JCA-SECURITY-SERVICES.md)
@@ -36,6 +35,7 @@ to point to a directory where the dynamic library for the SunEC provider is loca
 
 After the server starts you can access [http://localhost:8086/graal-hp-size](http://localhost:8086/graal-hp-size)
 which will make an HTTPS request to the GraalVM home page using Akka HTTP client and return the size of the response.
+You can also visit [http://localhost:8086/info](http://localhost:8086/info) to see a simple info response displaying the date.
 
 ## How it works
 Most of the Akka-specific configuration for `native-image` is provided by [akka-graal-config](https://github.com/vmencik/akka-graal-config)

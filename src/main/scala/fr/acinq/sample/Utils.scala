@@ -7,6 +7,8 @@ object Utils {
 
   case class InfoResponse(date: String)
 
+  case class Person(firstName: String, lastName: String)
+
   object InfoResponseSerializer extends CustomSerializer[InfoResponse](format => ({
     null
   },{

@@ -104,13 +104,17 @@
                         -H:IncludeResources=.*\.properties
                         -H:ConfigurationFileDirectories=../graal-config
                         -H:+ReportUnsupportedElementsAtRuntime
-                        <!-- -H:+ReflectionPluginTracing -->
+                        -H:+JNI
+<!--                        -H:+JNIVerboseLookupErrors-->
+<!--                        -H:+PrintJNIMethods-->
+<!--                        -H:+ReflectionPluginTracing-->
                         --no-server
                         --initialize-at-build-time
                         --initialize-at-run-time=akka.protobuf.DescriptorProtos
                         --initialize-at-run-time=com.typesafe.config.impl.ConfigImpl$EnvVariablesHolder
                         --initialize-at-run-time=com.typesafe.config.impl.ConfigImpl$SystemPropertiesHolder
                         --no-fallback
+                        --allow-incomplete-classpath
                     </buildArgs>
                 </configuration>
                 <executions>
@@ -200,6 +204,11 @@
             <groupId>de.heikoseeberger</groupId>
             <artifactId>akka-http-json4s_${scala.version.short}</artifactId>
             <version>1.19.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.28.0</version>
         </dependency>
 
     </dependencies>

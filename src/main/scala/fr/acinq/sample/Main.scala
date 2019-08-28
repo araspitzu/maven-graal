@@ -1,5 +1,6 @@
 package fr.acinq.sample
 
+import java.sql.DriverManager
 import java.time.LocalDateTime
 import java.util.logging.LogManager
 
@@ -21,12 +22,17 @@ object Main extends LazyLogging with Directives with Json4sSupport {
   def main(args: Array[String]): Unit = {
     configureLogging()
 
+
     val config = ConfigFactory.load()
     implicit val system: ActorSystem = ActorSystem("graal", config)
     implicit val materializer: Materializer = ActorMaterializer()
     implicit val ec: ExecutionContext = system.dispatcher
     implicit val formats = org.json4s.DefaultFormats + InfoResponseSerializer
     implicit val serialization = org.json4s.jackson.Serialization
+
+    Class.forName("org.sqlite.JDBC")
+    val database = new Database(DriverManager.getConnection("jdbc:sqlite:memory"))
+    database.createDb()
 
     val route = get {
         path("graal-hp-size") {
@@ -35,7 +41,12 @@ object Main extends LazyLogging with Directives with Json4sSupport {
         }
       } ~ path("info") {
           complete(InfoResponse(date = LocalDateTime.now().toString))
+        } ~ path("query") {
+          parameter('name) { name =>
+            complete(database.byName(name))
+          }
         }
+
     }
 
     Http()

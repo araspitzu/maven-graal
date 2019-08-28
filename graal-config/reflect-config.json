@@ -257,6 +257,17 @@
   "fields":[{"name":"MODULE$"}]
 },
 {
+  "name":"fr.acinq.sample.Utils$Person",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allPublicConstructors":true
+},
+{
+  "name":"fr.acinq.sample.Utils$Person$",
+  "allPublicMethods":true,
+  "fields":[{"name":"MODULE$"}]
+},
+{
   "name":"java.io.Serializable"
 },
 {
@@ -270,6 +281,12 @@
 {
   "name":"java.lang.Thread",
   "fields":[{"name":"parkBlocker", "allowUnsafeAccess":true}]
+},
+{
+  "name":"org.sqlite.JDBC"
+},
+{
+  "name":"scala.Symbol"
 },
 {
   "name":"scala.concurrent.Future$InternalCallbackExecutor$",
