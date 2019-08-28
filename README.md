@@ -1,15 +1,17 @@
-# Akka HTTP + GraalVM native
-Example project with simple Akka HTTP server compiled with GraalVM native-image.
+# GraalVM native with eclair dependencies
+
+Example project showing the usage of a simple akka http server with json serialization, compiled with GraalVM native-image.
+The goal of the project is to use all of eclair's dependencies to prepare moving to the graal platform.
 
 ## Pre-requisites
   * Maven
   * [GraalVM](https://github.com/oracle/graal/releases)
-  * `native-image` from `GRAAL_HOME/bin` in `PATH`
+  * `native-image` from `$GRAAL_HOME/bin` in `PATH`
   
 Suggested environment variables:
 
-    export GRAAL_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-19.1.1/Contents/Home
-    export PATH=$PATH:${GRAAL_HOME}/bin
+    export GRAAL_HOME=/path/to/your/graal/installation/graalvm-ce-19.2.0
+    export PATH=$PATH:$GRAAL_HOME/bin
     
 [Install native-image](https://www.graalvm.org/docs/reference-manual/aot-compilation/#install-native-image):
 
@@ -17,18 +19,15 @@ Suggested environment variables:
   
 ## Compiling
     
-    mvn package
+    JAVA_HOME=$GRAAL_HOME mvn clean package
     
 It might take a few minutes to compile.
    
 ## Running
-    
-    # MacOS:
-    ./target/graalvm-native-image/akka-graal-native -Djava.library.path=${GRAAL_HOME}/jre/lib
-    
+        
     # Linux:
-    ./target/graalvm-native-image/akka-graal-native -Djava.library.path=${GRAAL_HOME}/jre/lib/amd64
-    
+    target/graal-akka-maven -Djava.library.path=$JAVA_HOME/lib
+
 Because the project is compiled with
 [Java Crypto enabled](https://github.com/oracle/graal/blob/master/substratevm/JCA-SECURITY-SERVICES.md)
 for the native image (to support HTTPS) `java.library.path` system property must be set at runtime
