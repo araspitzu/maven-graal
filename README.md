@@ -37,6 +37,21 @@ to point to a directory where the dynamic library for the SunEC provider is loca
 After the server starts you can access [http://localhost:8086/graal-hp-size](http://localhost:8086/graal-hp-size)
 which will make an HTTPS request to the GraalVM home page using Akka HTTP client and return the size of the response.
 
+## What works
+- Akka-actor 2.5
+- Akka-http 10.1.8 (see `/json` endpoint for a demo)
+- Logging
+- Typesafe config
+- Json4s-jackson (no reflection though) (see `/json` endpoint for a demo)
+- JHeaps (see `/jheaps` endpoint for a demo)
+- Scodec (see `/scodec` endpoint for a demo)
+
+## What doesn't work
+- SQLite fails to load the native JNI, see https://github.com/oracle/graal/issues/966
+  More work on SQLite integration is in the sqlite-jdbc branch 
+
+
+
 ## How it works
 Most of the Akka-specific configuration for `native-image` is provided by [akka-graal-config](https://github.com/vmencik/akka-graal-config)
 repository which publishes a set of jar artifacts that contain the necessary configuration resources
@@ -75,29 +90,8 @@ and `com.typesafe.config.impl.ConfigImpl$SystemPropertiesHolder` need to be run 
 the `--initialize-at-run-time` option.
 Otherwise the environment from image build time will be baked in to the configuration.
 
-### Akka Scheduler and sun.misc.Unsafe
-To make the default Akka scheduler work with SubstrateVM it is necessary to recalculate the field
-offset that it uses with sun.misc.Unsafe.
-This is done by using SubstrateVM API in `AkkaSubstitutions` class from `graal-akka-actor` dependency.
-
-For more details see the section about Unsafe in this [blog post](https://medium.com/graalvm/instant-netty-startup-using-graalvm-native-image-generation-ed6f14ff7692).
-
-Note that this substitution is only necessary with Scala 2.12. Curiously with Scala 2.13 `native-image`
-can make the substitution itself automatically. Probably due to some difference in the emitted
-bytecode.
-
-### MethodHandle in scala.runtime.Statics
-In Scala 2.13 a MethodHandle is used in `Statics.releaseFence()` to invoke either
-`java.lang.invoke.VarHandle.releaseFence()` if running in Java 9 VM or `sun.misc.Unsafe.storeFence()`
-if on Java 8. As noted above, MethodHandles are a problem with `native-image` but since GraalVM is
-currently based on Java 8 `Statics.releaseFence()` can be substituted to always call Unsafe without
-using MethodHandle. This is done by `ScalaSubstitutions` present in Scala 2.13 version of
-`graal-akka-actor`.
-
-### Serialization
-SubstrateVM does not support Java serialization yet so anything that depends on
-`akka.serialization.JavaSerializer` will not work with `native-image`.
-
 ### Logging
 It is currently not easy to get Logback working because of its Groovy dependencies and incomplete
 classpath problems with `native-image` so `java.util.logging` is used instead.
+
+

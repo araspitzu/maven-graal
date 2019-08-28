@@ -1,12 +1,19 @@
 package fr.acinq.sample
 
+import com.typesafe.scalalogging.LazyLogging
 import org.json4s.CustomSerializer
 import org.json4s.JsonAST.{JField, JInt, JObject, JString}
+import scodec.bits.ByteVector
+import scodec.codecs._
 
-object Utils {
+object Utils extends LazyLogging {
 
   case class InfoResponse(date: String)
+  case class Point(x: Int, y: Int, z: Int)
 
+  /**
+    * JSON Deserializer
+    */
   object InfoResponseSerializer extends CustomSerializer[InfoResponse](format => ({
     null
   },{
@@ -14,4 +21,55 @@ object Utils {
       JField("date", JString(infoResponse.date))
     ))
   }))
+
+  object PointSerializer extends CustomSerializer[Point](format => ({
+    null
+  },{
+    case p: Point => JObject(List(
+      JField("x", JInt(p.x)),
+      JField("y", JInt(p.y)),
+      JField("z", JInt(p.z))
+    ))
+  }))
+
+  /**
+    * Scodec usage
+    */
+  val pointCodec = (
+    ("x" | int8) ::
+      ("y" | int8) ::
+      ("z" | int8)).as[Point]
+
+  def showScodecUsage(): List[String] = {
+    logger.info(s"encoding ${points.size} points via scodec")
+    points.map(pointCodec.encode(_).require.toByteVector.toHex)
+  }
+
+
+  /**
+    * JHeap usage
+    */
+  object PointComparator extends Ordering[Point]{
+    override def compare(a: Point, b: Point): Int = {
+      a.x.compareTo(b.x)
+    }
+  }
+
+  val points = List(
+    Point(3,4,5),
+    Point(4,5,6),
+    Point(2,3,4),
+    Point(5,6,7),
+    Point(1,2,3)
+  )
+
+  def showJHeapUsage():Point = {
+    logger.info(s"populating a sorted heap and finding the min")
+    val heap = new org.jheaps.tree.SimpleFibonacciHeap[Point, Int](PointComparator)
+    points.foreach(heap.insert)
+    val min = heap.findMin().getKey
+    logger.info(s"min = $min")
+  }
+
+
 }
