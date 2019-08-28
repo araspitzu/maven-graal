@@ -51,7 +51,11 @@ which will make an HTTPS request to the GraalVM home page using Akka HTTP client
 - Sttp with OkHttpBackend doesn't work, there is an issue https://github.com/oracle/graal/issues/1521
   where users claim that using a particular version of OkHttp does work, however sttp is built agains a different version.
     
-
+## Missing libraries from eclair-core
+- Apache commons-codec
+- Netty
+- Guava
+- JeroMQ
 
 
 ## How it works
