@@ -4,7 +4,13 @@
 },
 {
   "name":"akka.actor.ActorCell",
-  "allDeclaredFields":true
+  "allDeclaredFields":true,
+  "fields":[
+    {"name":"akka$actor$dungeon$Children$$_childrenRefsDoNotCallMeDirectly", "allowUnsafeAccess":true}, 
+    {"name":"akka$actor$dungeon$Children$$_functionRefsDoNotCallMeDirectly", "allowUnsafeAccess":true}, 
+    {"name":"akka$actor$dungeon$Children$$_nextNameDoNotCallMeDirectly", "allowUnsafeAccess":true}, 
+    {"name":"akka$actor$dungeon$Dispatch$$_mailboxDoNotCallMeDirectly", "allowUnsafeAccess":true}
+  ]
 },
 {
   "name":"akka.actor.DefaultSupervisorStrategy",
@@ -16,7 +22,7 @@
 },
 {
   "name":"akka.actor.LightArrayRevolverScheduler$TaskHolder",
-  "fields":[{"name":"task"}]
+  "fields":[{"name":"task", "allowUnsafeAccess":true}]
 },
 {
   "name":"akka.actor.LocalActorRefProvider",
@@ -37,17 +43,17 @@
 {
   "name":"akka.actor.RepointableActorRef",
   "fields":[
-    {"name":"_cellDoNotCallMeDirectly"}, 
-    {"name":"_lookupDoNotCallMeDirectly"}
+    {"name":"_cellDoNotCallMeDirectly", "allowUnsafeAccess":true}, 
+    {"name":"_lookupDoNotCallMeDirectly", "allowUnsafeAccess":true}
   ]
 },
 {
   "name":"akka.dispatch.AbstractNodeQueue",
-  "fields":[{"name":"_tailDoNotCallMeDirectly"}]
+  "fields":[{"name":"_tailDoNotCallMeDirectly", "allowUnsafeAccess":true}]
 },
 {
   "name":"akka.dispatch.AbstractNodeQueue$Node",
-  "fields":[{"name":"_nextDoNotCallMeDirectly"}]
+  "fields":[{"name":"_nextDoNotCallMeDirectly", "allowUnsafeAccess":true}]
 },
 {
   "name":"akka.dispatch.BoundedControlAwareMessageQueueSemantics"
@@ -67,15 +73,15 @@
 {
   "name":"akka.dispatch.Mailbox",
   "fields":[
-    {"name":"_statusDoNotCallMeDirectly"}, 
-    {"name":"_systemQueueDoNotCallMeDirectly"}
+    {"name":"_statusDoNotCallMeDirectly", "allowUnsafeAccess":true}, 
+    {"name":"_systemQueueDoNotCallMeDirectly", "allowUnsafeAccess":true}
   ]
 },
 {
   "name":"akka.dispatch.MessageDispatcher",
   "fields":[
-    {"name":"_inhabitantsDoNotCallMeDirectly"}, 
-    {"name":"_shutdownScheduleDoNotCallMeDirectly"}
+    {"name":"_inhabitantsDoNotCallMeDirectly", "allowUnsafeAccess":true}, 
+    {"name":"_shutdownScheduleDoNotCallMeDirectly", "allowUnsafeAccess":true}
   ]
 },
 {
@@ -97,19 +103,19 @@
 {
   "name":"akka.dispatch.forkjoin.ForkJoinPool",
   "fields":[
-    {"name":"ctl"}, 
-    {"name":"indexSeed"}, 
-    {"name":"plock"}, 
-    {"name":"stealCount"}
+    {"name":"ctl", "allowUnsafeAccess":true}, 
+    {"name":"indexSeed", "allowUnsafeAccess":true}, 
+    {"name":"plock", "allowUnsafeAccess":true}, 
+    {"name":"stealCount", "allowUnsafeAccess":true}
   ]
 },
 {
   "name":"akka.dispatch.forkjoin.ForkJoinPool$WorkQueue",
-  "fields":[{"name":"qlock"}]
+  "fields":[{"name":"qlock", "allowUnsafeAccess":true}]
 },
 {
   "name":"akka.dispatch.forkjoin.ForkJoinTask",
-  "fields":[{"name":"status"}]
+  "fields":[{"name":"status", "allowUnsafeAccess":true}]
 },
 {
   "name":"akka.event.DeadLetterListener",
@@ -135,6 +141,10 @@
   "methods":[{"name":"<init>","parameterTypes":["akka.actor.ActorSystem$Settings","akka.event.EventStream"] }]
 },
 {
+  "name":"akka.http.impl.engine.client.PoolInterfaceActor",
+  "allDeclaredFields":true
+},
+{
   "name":"akka.http.impl.engine.client.PoolMasterActor",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
@@ -155,6 +165,10 @@
   "allDeclaredConstructors":true
 },
 {
+  "name":"akka.io.TcpConnection",
+  "allDeclaredFields":true
+},
+{
   "name":"akka.io.TcpIncomingConnection",
   "allDeclaredConstructors":true
 },
@@ -168,13 +182,14 @@
 },
 {
   "name":"akka.io.TcpOutgoingConnection",
+  "allDeclaredFields":true,
   "allDeclaredConstructors":true
 },
 {
   "name":"akka.pattern.PromiseActorRef",
   "fields":[
-    {"name":"_stateDoNotCallMeDirectly"}, 
-    {"name":"_watchedByDoNotCallMeDirectly"}
+    {"name":"_stateDoNotCallMeDirectly", "allowUnsafeAccess":true}, 
+    {"name":"_watchedByDoNotCallMeDirectly", "allowUnsafeAccess":true}
   ]
 },
 {
@@ -212,6 +227,10 @@
   "allDeclaredFields":true
 },
 {
+  "name":"akka.stream.impl.io.TLSActor",
+  "allDeclaredFields":true
+},
+{
   "name":"akka.stream.impl.streamref.StreamRefsProtocol"
 },
 {
@@ -246,21 +265,11 @@
 },
 {
   "name":"java.lang.String",
-  "fields":[{"name":"value"}]
+  "fields":[{"name":"value", "allowUnsafeAccess":true}]
 },
 {
   "name":"java.lang.Thread",
-  "fields":[{"name":"parkBlocker"}]
-},
-{
-  "name":"java.util.logging.ConsoleHandler",
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true
-},
-{
-  "name":"java.util.logging.SimpleFormatter",
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true
+  "fields":[{"name":"parkBlocker", "allowUnsafeAccess":true}]
 },
 {
   "name":"scala.concurrent.Future$InternalCallbackExecutor$",

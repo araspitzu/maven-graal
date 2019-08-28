@@ -29,7 +29,7 @@
         <scala.version.short>2.12</scala.version.short>
         <akka.version>2.5.23</akka.version>
         <akka.http.version>10.1.8</akka.http.version>
-        <graal.version>19.1.1</graal.version>
+        <graal.version>19.2.0</graal.version>
         <graal.akka.version>0.4.1</graal.akka.version>
         <sttp.version>1.6.4</sttp.version>
         <bitcoinlib.version>0.13</bitcoinlib.version>
@@ -104,13 +104,13 @@
                         -H:IncludeResources=.*\.properties
                         -H:ConfigurationFileDirectories=../graal-config
                         -H:+ReportUnsupportedElementsAtRuntime
+                        <!-- -H:+ReflectionPluginTracing -->
                         --no-server
                         --initialize-at-build-time
                         --initialize-at-run-time=akka.protobuf.DescriptorProtos
                         --initialize-at-run-time=com.typesafe.config.impl.ConfigImpl$EnvVariablesHolder
                         --initialize-at-run-time=com.typesafe.config.impl.ConfigImpl$SystemPropertiesHolder
                         --no-fallback
-                        --allow-incomplete-classpath
                     </buildArgs>
                 </configuration>
                 <executions>
