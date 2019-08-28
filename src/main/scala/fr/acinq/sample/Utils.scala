@@ -69,6 +69,7 @@ object Utils extends LazyLogging {
     points.foreach(heap.insert)
     val min = heap.findMin().getKey
     logger.info(s"min = $min")
+    min
   }
 
 
