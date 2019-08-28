@@ -49,6 +49,9 @@ which will make an HTTPS request to the GraalVM home page using Akka HTTP client
 ## What doesn't work
 - SQLite fails to load the native JNI, see https://github.com/oracle/graal/issues/966
   More work on SQLite integration is in the sqlite-jdbc branch 
+- Sttp with OkHttpBackend doesn't work, there is an issue https://github.com/oracle/graal/issues/1521
+  where users claim that using a particular version of OkHttp does work, however sttp is built agains a different version.
+    
 
 
 
