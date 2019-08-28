@@ -23,8 +23,6 @@ object Main extends LazyLogging {
     implicit val materializer: Materializer = ActorMaterializer()
     implicit val ec: ExecutionContext = system.dispatcher
 
-    logger.info(s"SYSTEM_PROPERTIES:${System.getProperties}")
-
     val route =
       path("graal-hp-size") {
         get {

@@ -2,7 +2,7 @@
 Example project with simple Akka HTTP server compiled with GraalVM native-image.
 
 ## Pre-requisites
-  * SBT
+  * Maven
   * [GraalVM](https://github.com/oracle/graal/releases)
   * `native-image` from `GRAAL_HOME/bin` in `PATH`
   
@@ -17,7 +17,7 @@ Suggested environment variables:
   
 ## Compiling
     
-    sbt graalvm-native-image:packageBin
+    mvn package
     
 It might take a few minutes to compile.
    
