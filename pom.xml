@@ -31,6 +31,9 @@
         <akka.http.version>10.1.8</akka.http.version>
         <graal.version>19.1.1</graal.version>
         <graal.akka.version>0.4.1</graal.akka.version>
+        <sttp.version>1.6.4</sttp.version>
+        <bitcoinlib.version>0.13</bitcoinlib.version>
+        <guava.version>24.0-android</guava.version>
     </properties>
 
     <build>
@@ -180,6 +183,20 @@
             <artifactId>graal-akka-slf4j_${scala.version.short}</artifactId>
             <version>${graal.akka.version}</version>
         </dependency>
+        <!-- Eclair dependencies  -->
+        <dependency>
+            <groupId>com.softwaremill.sttp</groupId>
+            <artifactId>okhttp-backend_${scala.version.short}</artifactId>
+            <version>${sttp.version}</version>
+        </dependency>
+<!--        <dependency>-->
+<!--          <groupId>org.json4s</groupId>-->
+<!--          <artifactId>json4s-jackson_${scala.version.short}</artifactId>-->
+<!--          <version>3.6.0</version>-->
+<!--        </dependency>-->
+
+
+
 
     </dependencies>
 </project>
