@@ -102,7 +102,8 @@
                     </mainClass>
                     <buildArgs>
                         -H:IncludeResources=.*\.properties
-                        -H:ReflectionConfigurationFiles=../graal/reflectconf-jul.json
+                        -H:ConfigurationFileDirectories=../graal-config
+                        -H:+ReportUnsupportedElementsAtRuntime
                         --no-server
                         --initialize-at-build-time
                         --initialize-at-run-time=akka.protobuf.DescriptorProtos
@@ -184,19 +185,22 @@
             <version>${graal.akka.version}</version>
         </dependency>
         <!-- Eclair dependencies  -->
-        <dependency>
-            <groupId>com.softwaremill.sttp</groupId>
-            <artifactId>okhttp-backend_${scala.version.short}</artifactId>
-            <version>${sttp.version}</version>
-        </dependency>
+        <!-- STTP fails to use OkHttpBackend, see https://github.com/oracle/graal/issues/1521 -->
 <!--        <dependency>-->
-<!--          <groupId>org.json4s</groupId>-->
-<!--          <artifactId>json4s-jackson_${scala.version.short}</artifactId>-->
-<!--          <version>3.6.0</version>-->
+<!--            <groupId>com.softwaremill.sttp</groupId>-->
+<!--            <artifactId>okhttp-backend_${scala.version.short}</artifactId>-->
+<!--            <version>${sttp.version}</version>-->
 <!--        </dependency>-->
-
-
-
+        <dependency>
+          <groupId>org.json4s</groupId>
+          <artifactId>json4s-jackson_${scala.version.short}</artifactId>
+          <version>3.6.7</version>
+        </dependency>
+        <dependency>
+            <groupId>de.heikoseeberger</groupId>
+            <artifactId>akka-http-json4s_${scala.version.short}</artifactId>
+            <version>1.19.0</version>
+        </dependency>
 
     </dependencies>
 </project>
