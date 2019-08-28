@@ -1,17 +1,17 @@
 package fr.acinq.sample
 
+import java.time.LocalDateTime
 import java.util.logging.LogManager
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl._
 import akka.http.scaladsl.model.{HttpRequest, StatusCodes}
 import akka.http.scaladsl.server.Directives
 import akka.stream.{ActorMaterializer, Materializer}
 import com.typesafe.config.ConfigFactory
 import com.typesafe.scalalogging.LazyLogging
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
-import fr.acinq.sample.Utils.InfoResponse
+import fr.acinq.sample.Utils.{InfoResponse, InfoResponseSerializer}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Success
@@ -25,7 +25,7 @@ object Main extends LazyLogging with Directives with Json4sSupport {
     implicit val system: ActorSystem = ActorSystem("graal", config)
     implicit val materializer: Materializer = ActorMaterializer()
     implicit val ec: ExecutionContext = system.dispatcher
-    implicit val formats = org.json4s.DefaultFormats
+    implicit val formats = org.json4s.DefaultFormats + InfoResponseSerializer
     implicit val serialization = org.json4s.jackson.Serialization
 
     val route = get {
@@ -34,7 +34,7 @@ object Main extends LazyLogging with Directives with Json4sSupport {
             complete(size.toString)
         }
       } ~ path("info") {
-          complete(InfoResponse(asd = 3))
+          complete(InfoResponse(date = LocalDateTime.now().toString))
         }
     }
 
