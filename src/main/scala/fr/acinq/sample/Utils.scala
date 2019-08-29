@@ -12,6 +12,7 @@ object Utils extends LazyLogging {
 
   case class InfoResponse(date: String)
   case class Point(x: Int, y: Int, z: Int)
+  case class Person(firstName: String, lastName: String)
 
   /**
     * JSON Deserializer
