@@ -107,6 +107,15 @@
                         <!-- -H:+ReflectionPluginTracing -->
                         --no-server
                         --initialize-at-build-time
+                        --initialize-at-build-time=org.sqlite.JDBC
+                        --initialize-at-build-time=org.sqlite.core.DB\$ProgressObserver
+                        --initialize-at-build-time=org.sqlite.core.DB
+                        --initialize-at-build-time=org.sqlite.core.NativeDB
+                        --initialize-at-build-time=org.sqlite.ProgressHandler
+                        --initialize-at-build-time=org.sqlite.Function
+                        --initialize-at-build-time=org.sqlite.Function\$Aggregate
+                        --initialize-at-build-time=org.sqlite.Function\$Window
+
                         --initialize-at-run-time=akka.protobuf.DescriptorProtos
                         --initialize-at-run-time=com.typesafe.config.impl.ConfigImpl$EnvVariablesHolder
                         --initialize-at-run-time=com.typesafe.config.impl.ConfigImpl$SystemPropertiesHolder
@@ -184,6 +193,16 @@
             <artifactId>graal-akka-slf4j_${scala.version.short}</artifactId>
             <version>${graal.akka.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.graalvm.sdk</groupId>
+            <artifactId>graal-sdk</artifactId>
+            <version>${graal.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.substratevm</groupId>
+            <artifactId>svm</artifactId>
+            <version>${graal.version}</version>
+        </dependency>
         <!-- Eclair dependencies  -->
         <!-- STTP fails to use OkHttpBackend, see https://github.com/oracle/graal/issues/1521 -->
 <!--        <dependency>-->
@@ -219,9 +238,8 @@
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.28.0</version>
+            <version>3.27.2.1</version>
         </dependency>
-
     </dependencies>
 </project>
 

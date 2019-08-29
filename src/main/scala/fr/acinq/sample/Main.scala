@@ -12,7 +12,7 @@ import akka.stream.{ActorMaterializer, Materializer}
 import com.typesafe.config.ConfigFactory
 import com.typesafe.scalalogging.LazyLogging
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
-import fr.acinq.sample.Utils.{InfoResponse, InfoResponseSerializer, PointSerializer}
+import fr.acinq.sample.Utils.{InfoResponse, InfoResponseSerializer, PersonSerializer, PointSerializer}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Success
@@ -26,11 +26,11 @@ object Main extends LazyLogging with Directives with Json4sSupport {
     implicit val system: ActorSystem = ActorSystem("graal", config)
     implicit val materializer: Materializer = ActorMaterializer()
     implicit val ec: ExecutionContext = system.dispatcher
-    implicit val formats = org.json4s.DefaultFormats + InfoResponseSerializer + PointSerializer
+    implicit val formats = org.json4s.DefaultFormats + InfoResponseSerializer + PointSerializer + PersonSerializer
     implicit val serialization = org.json4s.jackson.Serialization
 
     Class.forName("org.sqlite.JDBC")
-    val database = new Database(DriverManager.getConnection("jdbc:sqlite:memory"))
+    val database = new Database(DriverManager.getConnection("jdbc:sqlite::memory"))
     database.createDb()
 
     val route = get {
@@ -52,6 +52,7 @@ object Main extends LazyLogging with Directives with Json4sSupport {
           }
         }
     }
+
 
     Http()
       .bindAndHandle(route,

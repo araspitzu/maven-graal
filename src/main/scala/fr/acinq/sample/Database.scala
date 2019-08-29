@@ -8,14 +8,14 @@ import fr.acinq.sample.Utils.Person
 class Database(connection: Connection) extends LazyLogging {
 
   def createDb() = {
-    logger.info(s"Creating database")
+    logger.info(s"creating and populating database")
     using(connection.createStatement) { stmt =>
       stmt.executeUpdate("drop table if exists person")
       stmt.executeUpdate("create table person (id integer, firstname string, lastname string)")
-      stmt.executeUpdate("insert into person values(1, 'Johan', 'Vos')")
-      stmt.executeUpdate("insert into person values(2, 'Eugene', 'Ryzhikov')")
-      stmt.executeUpdate("insert into person values(3, 'Joeri', 'Sykora')")
-      stmt.executeUpdate("insert into person values(4, 'Erwin', 'Morrhey')")
+      stmt.executeUpdate("insert into person values(1, 'Satoshi', 'Nakamoto')")
+      stmt.executeUpdate("insert into person values(2, 'Hal', 'Finney')")
+      stmt.executeUpdate("insert into person values(3, 'Adam', 'Back')")
+      stmt.executeUpdate("insert into person values(4, 'Wei', 'Dai')")
     }
   }
 
@@ -28,6 +28,7 @@ class Database(connection: Connection) extends LazyLogging {
   }
 
   def byName(name: String): Option[Person] = {
+    logger.info(s"query=$name")
     using(connection.prepareStatement("select * from person where firstname=?")) { stmt =>
       stmt.setString(1, name)
       val rs = stmt.executeQuery()

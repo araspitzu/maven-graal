@@ -35,6 +35,15 @@ object Utils extends LazyLogging {
     ))
   }))
 
+  object PersonSerializer extends CustomSerializer[Person](format => ({
+    null
+  },{
+    case p: Person => JObject(List(
+      JField("firstName", JString(p.firstName)),
+      JField("lastName", JString(p.lastName))
+    ))
+  }))
+
   /**
     * Scodec usage
     */
