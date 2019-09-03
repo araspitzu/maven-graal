@@ -1,12 +1,14 @@
 package fr.acinq.sample
 
 import com.typesafe.scalalogging.LazyLogging
+import fr.acinq.bitcoin.Crypto.PrivateKey
 import org.apache.commons.codec.binary.Base32
 import org.json4s.CustomSerializer
 import org.json4s.JsonAST.{JField, JInt, JObject, JString}
-import scodec.Codec
 import scodec.bits.ByteVector
 import scodec.codecs._
+
+import scala.util.Random
 
 object Utils extends LazyLogging {
 
@@ -89,6 +91,15 @@ object Utils extends LazyLogging {
     */
   def encodeBase32(s: String) = {
     new Base32().encodeAsString(s.getBytes)
+  }
+
+  /**
+    * Bitcoin-lib usage
+    */
+  def showBitcoinLibUsage() = {
+    val bytes = new Array[Byte](32)
+    Random.nextBytes(bytes) // not secure!
+    PrivateKey(ByteVector(bytes)).publicKey.toString()
   }
 
 }

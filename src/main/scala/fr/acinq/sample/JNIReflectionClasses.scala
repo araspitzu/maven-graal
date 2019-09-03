@@ -14,13 +14,13 @@ import org.sqlite.core.NativeDB
 class JNIReflectionClasses extends Feature with LazyLogging {
 
   override def beforeAnalysis(access: Feature.BeforeAnalysisAccess): Unit = {
-    try
+    try {
       JNIRuntimeAccess.register(classOf[NativeDB].getDeclaredMethod("_open_utf8", classOf[Array[Byte]], classOf[Int]))
-    catch {
+    } catch {
       case e: Exception =>
         e.printStackTrace()
     }
-    reflectionClasses.foreach(process)
+    reflectionClasses.foreach(register)
   }
 
   val reflectionClasses = List(
@@ -36,22 +36,22 @@ class JNIReflectionClasses extends Feature with LazyLogging {
     classOf[Array[Boolean]]
   )
 
-  private def process(clazz: Class[_]): Unit = {
+  private def register(clazz: Class[_]): Unit = {
     try {
       logger.info(s"Declaring class: ${clazz.getCanonicalName}")
       RuntimeReflection.register(clazz)
       for (method <- clazz.getDeclaredMethods) {
-        logger.info(s"method: ${method.getName}")
+//        logger.info(s"method: ${method.getName}")
         JNIRuntimeAccess.register(method)
         RuntimeReflection.register(method)
       }
       for (field <- clazz.getDeclaredFields) {
-        logger.info(s"field: ${field.getName}")
+//        logger.info(s"field: ${field.getName}")
         JNIRuntimeAccess.register(field)
         RuntimeReflection.register(field)
       }
       for (constructor <- clazz.getDeclaredConstructors) {
-        logger.info(s"constructor: ${constructor.getName}")
+//        logger.info(s"constructor: ${constructor.getName}")
         JNIRuntimeAccess.register(constructor)
         RuntimeReflection.register(constructor)
       }

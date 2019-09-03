@@ -32,7 +32,7 @@
         <graal.version>19.2.0</graal.version>
         <graal.akka.version>0.4.1</graal.akka.version>
         <sttp.version>1.6.4</sttp.version>
-        <bitcoinlib.version>0.13</bitcoinlib.version>
+        <bitcoinlib.version>0.17-SNAPSHOT</bitcoinlib.version>
         <guava.version>24.0-android</guava.version>
     </properties>
 
@@ -107,6 +107,7 @@
                         <!-- -H:+ReflectionPluginTracing -->
                         --no-server
                         --initialize-at-build-time
+                        <!-- sqlite related -->
                         --initialize-at-build-time=org.sqlite.JDBC
                         --initialize-at-build-time=org.sqlite.core.DB\$ProgressObserver
                         --initialize-at-build-time=org.sqlite.core.DB
@@ -115,6 +116,8 @@
                         --initialize-at-build-time=org.sqlite.Function
                         --initialize-at-build-time=org.sqlite.Function\$Aggregate
                         --initialize-at-build-time=org.sqlite.Function\$Window
+                        <!-- bitcoin-lib related -->
+                        --initialize-at-run-time=fr.acinq.bitcoin.Crypto$
 
                         --initialize-at-run-time=akka.protobuf.DescriptorProtos
                         --initialize-at-run-time=com.typesafe.config.impl.ConfigImpl$EnvVariablesHolder
@@ -239,6 +242,11 @@
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.27.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>fr.acinq</groupId>
+            <artifactId>bitcoin-lib_${scala.version.short}</artifactId>
+            <version>${bitcoinlib.version}</version>
         </dependency>
     </dependencies>
 </project>

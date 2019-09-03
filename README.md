@@ -46,6 +46,7 @@ which will make an HTTPS request to the GraalVM home page using Akka HTTP client
 - Scodec (see `/scodec` endpoint for a demo)
 - Apache commons codec (see `/commons` endpoint for a demo)
 - SQLite 3.27.2.1 with JNI (see `/query?name=Hal` endpoint for a demo)
+- bitcoin-lib with JNI (see `bitcoinlib` endpoint for a demo)
 
 ## What doesn't work
 - Sttp with OkHttpBackend doesn't work, there is an issue https://github.com/oracle/graal/issues/1521
@@ -55,7 +56,6 @@ which will make an HTTPS request to the GraalVM home page using Akka HTTP client
 - Netty
 - Guava
 - JeroMQ
-- bitcoin-lib
 
 ## How it works
 Most of the Akka-specific configuration for `native-image` is provided by [akka-graal-config](https://github.com/vmencik/akka-graal-config)
@@ -88,6 +88,14 @@ during native image build:
     
 The workaround is to initialize affected classes (and we actually do this for the whole classpath)
 at build time using the `--initalize-at-build-time` option.
+
+### Bitcoin-lib
+[bitcoin-lib](https://github.com/ACINQ/bitcoin-lib) is a library for bitcoin primitives by ACINQ, it uses the native 
+libsecp256k1 to perform EC operations and that is wrapped in a JNI layer. To use bitcoin-lib with graal's native-image
+you need to build a particular version of the JNI (the standard ones don't work because of the static initialization), 
+follow the instructions [here](https://github.com/araspitzu/secp256k1/tree/jni_non_static_init/src/java) to build 
+`secp256k1-jni`. Only after you published locally `secp256k1-jni` you can build the required version of bitcoin-lib
+from [here](https://github.com/araspitzu/bitcoin-lib/tree/new_jni).
 
 ### Lightbend Config
 Static initializers of `com.typesafe.config.impl.ConfigImpl$EnvVariablesHolder`
