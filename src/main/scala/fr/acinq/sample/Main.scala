@@ -12,7 +12,6 @@ import akka.stream.{ActorMaterializer, Materializer}
 import com.typesafe.config.ConfigFactory
 import com.typesafe.scalalogging.LazyLogging
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
-import fr.acinq.bitcoin.Crypto
 import fr.acinq.sample.Utils.{InfoResponse, InfoResponseSerializer, PersonSerializer, PointSerializer}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -53,6 +52,8 @@ object Main extends LazyLogging with Directives with Json4sSupport {
           }
         } ~ path("bitcoinlib") {
           complete(Utils.showBitcoinLibUsage())
+        } ~ path("hostandport") {
+          complete(Utils.showGuavaUsage())
         }
     }
 

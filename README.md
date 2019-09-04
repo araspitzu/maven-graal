@@ -46,15 +46,14 @@ which will make an HTTPS request to the GraalVM home page using Akka HTTP client
 - Scodec (see `/scodec` endpoint for a demo)
 - Apache commons codec (see `/commons` endpoint for a demo)
 - SQLite 3.27.2.1 with JNI (see `/query?name=Hal` endpoint for a demo)
-- bitcoin-lib with JNI (see `bitcoinlib` endpoint for a demo)
-
+- bitcoin-lib with JNI (see `/bitcoinlib` endpoint for a demo)
+- Guava 24-android (see `/hostandport` endpoint)
 ## What doesn't work
 - Sttp with OkHttpBackend doesn't work, there is an issue https://github.com/oracle/graal/issues/1521
   where users claim that using a particular version of OkHttp does work, however sttp is built against a different version.
     
 ## Missing libraries from eclair-core
 - Netty
-- Guava
 - JeroMQ
 
 ## How it works

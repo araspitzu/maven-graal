@@ -1,5 +1,6 @@
 package fr.acinq.sample
 
+import com.google.common.net.HostAndPort
 import com.typesafe.scalalogging.LazyLogging
 import fr.acinq.bitcoin.Crypto.PrivateKey
 import org.apache.commons.codec.binary.Base32
@@ -100,6 +101,10 @@ object Utils extends LazyLogging {
     val bytes = new Array[Byte](32)
     Random.nextBytes(bytes) // not secure!
     PrivateKey(ByteVector(bytes)).publicKey.toString()
+  }
+
+  def showGuavaUsage() = {
+    HostAndPort.fromParts("127.0.0.1", 8080).toString
   }
 
 }
