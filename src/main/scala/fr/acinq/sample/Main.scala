@@ -40,7 +40,9 @@ object Main extends LazyLogging with Directives with Json4sSupport {
     database.createDb()
 
     // connect electrum-client to server
-    val electrum = system.actorOf(Props(new ElectrumClient(InetSocketAddress.createUnresolved("electrum.acinq.co", 50002), SSL.LOOSE)))
+    //val electrum = system.actorOf(Props(new ElectrumClient(InetSocketAddress.createUnresolved("electrum.acinq.co", 50002), SSL.LOOSE)))
+
+    val sampleActor = system.actorOf(Props(new SampleActor))
 
     val route = get {
         path("graal-hp-size") {
@@ -63,10 +65,6 @@ object Main extends LazyLogging with Directives with Json4sSupport {
           complete(Utils.showBitcoinLibUsage())
         } ~ path("hostandport") {
           complete(Utils.showGuavaUsage())
-        } ~ path("chaintip") {
-          complete {
-            (electrum ? GetHeader(593190)).mapTo[GetHeaderResponse].map(_.header.blockId.toHex)
-          }
         }
     }
 

@@ -250,15 +250,6 @@
   "methods":[{"name":"<init>","parameterTypes":["com.typesafe.sslconfig.util.LoggerFactory"] }]
 },
 {
-  "name":"fr.acinq.sample.ElectrumClient",
-  "allDeclaredFields":true,
-  "allPublicFields":true,
-  "allDeclaredMethods":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true
-},
-{
   "name":"fr.acinq.sample.Utils$InfoResponse",
   "allDeclaredFields":true,
   "allPublicMethods":true,
