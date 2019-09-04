@@ -1,19 +1,24 @@
 package fr.acinq.sample
 
+import java.net.InetSocketAddress
 import java.sql.DriverManager
 import java.time.LocalDateTime
 import java.util.logging.LogManager
 
-import akka.actor.ActorSystem
+import akka.actor.{ActorSystem, Props}
+import akka.pattern._
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{HttpRequest, StatusCodes}
 import akka.http.scaladsl.server.Directives
 import akka.stream.{ActorMaterializer, Materializer}
+import akka.util.Timeout
 import com.typesafe.config.ConfigFactory
 import com.typesafe.scalalogging.LazyLogging
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
+import fr.acinq.sample.ElectrumClient.{GetHeader, GetHeaderResponse, SSL}
 import fr.acinq.sample.Utils.{InfoResponse, InfoResponseSerializer, PersonSerializer, PointSerializer}
 
+import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Success
 
@@ -23,6 +28,7 @@ object Main extends LazyLogging with Directives with Json4sSupport {
     configureLogging()
 
     val config = ConfigFactory.load()
+    implicit val timeout: Timeout = Timeout(10 seconds)
     implicit val system: ActorSystem = ActorSystem("graal", config)
     implicit val materializer: Materializer = ActorMaterializer()
     implicit val ec: ExecutionContext = system.dispatcher
@@ -32,6 +38,9 @@ object Main extends LazyLogging with Directives with Json4sSupport {
     Class.forName("org.sqlite.JDBC")
     val database = new Database(DriverManager.getConnection("jdbc:sqlite::memory"))
     database.createDb()
+
+    // connect electrum-client to server
+    val electrum = system.actorOf(Props(new ElectrumClient(InetSocketAddress.createUnresolved("electrum.acinq.co", 50002), SSL.LOOSE)))
 
     val route = get {
         path("graal-hp-size") {
@@ -54,13 +63,15 @@ object Main extends LazyLogging with Directives with Json4sSupport {
           complete(Utils.showBitcoinLibUsage())
         } ~ path("hostandport") {
           complete(Utils.showGuavaUsage())
+        } ~ path("chaintip") {
+          complete {
+            (electrum ? GetHeader(593190)).mapTo[GetHeaderResponse].map(_.header.blockId.toHex)
+          }
         }
     }
 
     Http()
-      .bindAndHandle(route,
-                     config.getString("http.service.bind-to"),
-                     config.getInt("http.service.port"))
+      .bindAndHandle(route, config.getString("http.service.bind-to"), config.getInt("http.service.port"))
       .andThen {
         case Success(binding) => logger.info(s"Listening at ${binding.localAddress}")
       }

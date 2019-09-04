@@ -104,6 +104,8 @@
                         -H:IncludeResources=.*\.properties
                         -H:ConfigurationFileDirectories=../graal-config
                         -H:+ReportUnsupportedElementsAtRuntime
+                        -H:+ReportExceptionStackTraces
+                        -H:+TraceClassInitialization
                         <!-- -H:+ReflectionPluginTracing -->
                         --no-server
                         --initialize-at-build-time
@@ -122,7 +124,16 @@
                         --initialize-at-run-time=akka.protobuf.DescriptorProtos
                         --initialize-at-run-time=com.typesafe.config.impl.ConfigImpl$EnvVariablesHolder
                         --initialize-at-run-time=com.typesafe.config.impl.ConfigImpl$SystemPropertiesHolder
+                        <!-- netty related -->
+                        --initialize-at-run-time=io.netty.handler.ssl.ReferenceCountedOpenSslServerContext
+                        --initialize-at-run-time=io.netty.handler.ssl.ReferenceCountedOpenSslClientContext
+                        --initialize-at-run-time=io.netty.handler.ssl.JdkNpnApplicationProtocolNegotiator
+                        --initialize-at-run-time=io.netty.handler.ssl.ReferenceCountedOpenSslEngine
+                        --initialize-at-run-time=io.netty.handler.ssl.ConscryptAlpnSslEngine
+                        --initialize-at-run-time=io.netty.handler.ssl.JettyNpnSslEngine
+                        --initialize-at-run-time=io.netty.util.internal.logging.Log4JLogger
                         --no-fallback
+                        --allow-incomplete-classpath
                         -J-Xmx3G
                     </buildArgs>
                 </configuration>
@@ -253,6 +264,11 @@
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>24.0-android</version>
+      </dependency>
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-all</artifactId>
+        <version>4.1.32.Final</version>
       </dependency>
     </dependencies>
 </project>
