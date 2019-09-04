@@ -5,7 +5,7 @@ import java.sql.DriverManager
 import java.time.LocalDateTime
 import java.util.logging.LogManager
 
-import akka.actor.{ActorSystem, Props}
+import akka.actor.{ActorSystem, Props, SupervisorStrategy}
 import akka.pattern._
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{HttpRequest, StatusCodes}
@@ -15,8 +15,8 @@ import akka.util.Timeout
 import com.typesafe.config.ConfigFactory
 import com.typesafe.scalalogging.LazyLogging
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
-import fr.acinq.sample.ElectrumClient.{GetHeader, GetHeaderResponse, SSL}
 import fr.acinq.sample.Utils.{InfoResponse, InfoResponseSerializer, PersonSerializer, PointSerializer}
+import fr.acinq.sample.actors.{SampleActor, SimpleSupervisor}
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
@@ -42,7 +42,7 @@ object Main extends LazyLogging with Directives with Json4sSupport {
     // connect electrum-client to server
     //val electrum = system.actorOf(Props(new ElectrumClient(InetSocketAddress.createUnresolved("electrum.acinq.co", 50002), SSL.LOOSE)))
 
-    val sampleActor = system.actorOf(Props(new SampleActor))
+    val sampleActor = system.actorOf(SimpleSupervisor.props(Props(new SampleActor), "sample-actor", SupervisorStrategy.Resume))
 
     val route = get {
         path("graal-hp-size") {
@@ -65,6 +65,8 @@ object Main extends LazyLogging with Directives with Json4sSupport {
           complete(Utils.showBitcoinLibUsage())
         } ~ path("hostandport") {
           complete(Utils.showGuavaUsage())
+        } ~ path("kill-child") {
+          complete { sampleActor ! 'kill ; "done"}
         }
     }
 

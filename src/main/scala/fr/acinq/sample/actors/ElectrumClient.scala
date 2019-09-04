@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package fr.acinq.sample
+package fr.acinq.sample.actors
 
 import java.io.IOException
 import java.net.{InetSocketAddress, SocketAddress}
 import java.util
 
-import akka.actor.{Actor, ActorLogging, ActorRef, Stash, Terminated}
+import akka.actor.{Actor, ActorLogging, ActorRef, Terminated}
 import fr.acinq.bitcoin._
-import fr.acinq.sample.ElectrumClient.SSL
+import fr.acinq.sample.actors.ElectrumClient.SSL
 import io.netty.bootstrap.Bootstrap
 import io.netty.buffer.PooledByteBufAllocator
 import io.netty.channel._
