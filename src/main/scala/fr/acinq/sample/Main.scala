@@ -39,9 +39,6 @@ object Main extends LazyLogging with Directives with Json4sSupport {
     val database = new Database(DriverManager.getConnection("jdbc:sqlite::memory"))
     database.createDb()
 
-    // connect electrum-client to server
-    //val electrum = system.actorOf(Props(new ElectrumClient(InetSocketAddress.createUnresolved("electrum.acinq.co", 50002), SSL.LOOSE)))
-
     val sampleActor = system.actorOf(SimpleSupervisor.props(Props(new SampleActor), "sample-actor", SupervisorStrategy.Resume))
 
     val route = get {
