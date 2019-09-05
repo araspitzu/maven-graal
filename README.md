@@ -4,8 +4,8 @@ Example project showing the usage of a simple akka http server with json seriali
 The goal of the project is to use all of eclair's dependencies to prepare moving to the graal platform.
 
 ## Pre-requisites
-  * Maven
-  * [GraalVM](https://github.com/oracle/graal/releases)
+  * Maven 3.6.x
+  * [GraalVM](https://github.com/oracle/graal/releases) version 19.2.0
   * `native-image` from `$GRAAL_HOME/bin` in `PATH`
   
 Suggested environment variables:
@@ -16,6 +16,12 @@ Suggested environment variables:
 [Install native-image](https://www.graalvm.org/docs/reference-manual/aot-compilation/#install-native-image):
 
     gu install native-image
+  
+This project needs `bitcoin-lib` v0.17-SNAPSHOT which is not currently published, in order to build it you first 
+need to build its dependency [`secp256k1-jni`](https://github.com/araspitzu/secp256k1/tree/jni_non_static_init/src/java). 
+Once you successfully installed the artifact in your local maven repo then you can build the correct
+version of [`bitcoin-lib`](https://github.com/araspitzu/bitcoin-lib/tree/new_jni), this is a prerequisite for building this 
+project.
   
 ## Compiling
     
@@ -33,9 +39,6 @@ Because the project is compiled with
 for the native image (to support HTTPS) `java.library.path` system property must be set at runtime
 to point to a directory where the dynamic library for the SunEC provider is located.
 
-After the server starts you can access [http://localhost:8086/graal-hp-size](http://localhost:8086/graal-hp-size)
-which will make an HTTPS request to the GraalVM home page using Akka HTTP client and return the size of the response.
-
 ## What works
 - Akka-actor 2.5
 - Akka-http 10.1.8 (see `/json` endpoint for a demo)
@@ -48,19 +51,19 @@ which will make an HTTPS request to the GraalVM home page using Akka HTTP client
 - SQLite 3.27.2.1 with JNI (see `/query?name=Hal` endpoint for a demo)
 - bitcoin-lib with JNI (see `/bitcoinlib` endpoint for a demo)
 - Guava 24-android (see `/hostandport` endpoint)
+
 ## What doesn't work
 - Sttp with OkHttpBackend doesn't work, there is an issue https://github.com/oracle/graal/issues/1521
   where users claim that using a particular version of OkHttp does work, however sttp is built against a different version.
     
 ## Missing libraries from eclair-core
-- Netty
 - JeroMQ
 
 ## How it works
-Most of the Akka-specific configuration for `native-image` is provided by [akka-graal-config](https://github.com/vmencik/akka-graal-config)
-repository which publishes a set of jar artifacts that contain the necessary configuration resources
-for `native-image` to compile Akka modules. Just having these jars in the classpath is enough
-for `native-image` to pick up this configuration.
+Most of the graal-specific configuration for `native-image` in the `graal-config` folder.The akka-specific configuration 
+is provided by [akka-graal-config](https://github.com/vmencik/akka-graal-config) repository which publishes a set of 
+jar artifacts that contain the necessary configuration resources for `native-image` to compile Akka modules. 
+Just having these jars in the classpath is enough for `native-image` to pick up this configuration.
 See [this blog post](https://medium.com/graalvm/simplifying-native-image-generation-with-maven-plugin-and-embeddable-configuration-d5b283b92f57)
 for more details on how that mechanism works.
 
